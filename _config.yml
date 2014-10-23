@@ -59,7 +59,7 @@ tag: 2
 port: 4000
 server_ip: localhost
 logger: true
-logger_format: default
+logger_format: dev
 
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
