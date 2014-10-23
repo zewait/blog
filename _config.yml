@@ -86,4 +86,4 @@ exclude_generator:
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: github
-  repo: https://github.com/zewait/hexo-blog.git
+  repo: https://github.com/zewait/blog.git
