@@ -35,7 +35,7 @@ categories:
 加进服务和开机启动
 {% codeblock lang:shell %}
   cp /usr/local/apache2/bin/apachectl /init.d/httpd
-  ln -s /etc/init.d/httpd /etc/rc5.d/S85httpd
+  ln -s /etc/init.d/httpd /etc/rc.d/rc5.d/S85httpd
   # 运行chkconfig --list发现列表中并没有httpd,通过chkconfig --add httpd来添加,
   # 可能会提示httpd服务不支持chkconfig,需要编辑/etc/init.d/httpd,加入注析#chkconfig 345 85 15
   # 345代表哪些linux级别需要启动httpd,启动序号85 关闭序号15
