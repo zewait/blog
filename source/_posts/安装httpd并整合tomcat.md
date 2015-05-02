@@ -18,7 +18,11 @@ categories:
 配置编译安装
 {% codeblock lang:shell %}
   cd httpd-2.2.29
-  ./configure --prefix=/usr/local/apache2 #prefix是指定了安装位置
+  #prefix是指定了安装位置
+  ./configure --prefix=/usr/local/apache2 \      # 安装目录
+  --enable-modules=most \                        # 大部分模块静态编译到httpd的二进制文件中
+  --enable-mods-shared=all \                     # 表示动态加载所有模块,如果去掉shared的话,是静态加载所有模块
+  --enable-so \
   make && make install
 {% endcodeblock %}
 
@@ -62,7 +66,7 @@ NameVirtualHost *:80
 
 重启httpd,发现出错了
 *Invalid command 'ProxyPass', perhaps misspelled or defined by a module not included in the server configuration*
-原因是源代码编译安装的是个纯净的httpd!没有安装任何一个模块
+需要安装proxy等模块
 
 介绍下添加模块的命令
 {% codeblock lang:shell %}
