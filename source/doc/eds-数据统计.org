@@ -1,0 +1,57 @@
+#+SETUPFILE: ~/.emacs.d/site-lisp/org-html-themes/setup/bigblow-pirilampo.setup
+
+* 选用技术
+ 
+** 访问层
+ 采用appkey和appsecret的方式校验请求合法性。参考eds会员商城或者消息系统
+
+** 持久层: mongodb
+*** 优势
+ * 快速!(当然，这和具体的应用方式有关，通常来说，它比一般的关系型数据库快5位左右。)很高的可扩展性 – 轻轻松松就可实现PB级的存储(但是可能我们并不需要PB级的存储，10TB可能就够了)
+ * 它有一个很好的 replication 模式 (replica sets)
+ * 有很完善的Java API
+ * 它的存储格式是Json的，这对Java来说非常好处理，对javascirpt亦然。
+ * 它有一个非常活跃的社区
+ * 扩展性高
+*** Getting Started Guide
+ 1. mongodb website: https://www.mongodb.org/
+ 2. 安装: https://docs.mongodb.org/manual/installation/
+ 3. CRUD概念: https://docs.mongodb.org/manual/core/crud/
+ 4. 传统关系型数据库跟mongodb的使用对比:https://docs.mongodb.org/manual/reference/sql-comparison/
+ 5. java版本操作库: https://docs.mongodb.org/getting-started/java/
+    
+
+* 访问日志
+** 叙述
+ 记录所有访问记录。
+** 实现方法
+ * 提供api接口方式(基于http协议和json数据)
+ * 网页可提供javascript文件形式，参照百度统计(页面嵌套script标签请求后台，后台解析该请求头实现统计)。
+
+** 记录数据
+ *** 数据范例(取于[[https://www.nginx.com/resources/admin-guide/logging-and-monitoring/][nginx 访问日志]])
+  * 格式
+   '$remote\under{}addr - $remote\under{}user [$time\under{}local] "$request" $status $body\under{}bytes\under{}sent "$http\under{}referer" "$http\under{}user\under{}agent"  
+  * 例子
+   127.0.0.1 - - [05/Oct/2015:00:00:58 +0800] "GET /index.php HTTP/1.1" 200 91632 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10\under{}10\under{}2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36"
+
+ 说明:
+  * $remote\under{}addr - client address
+  * $remote\under{}user - user name supplied with the Basic authentication
+  * $time\under{}local - local time in the Common Log Format (1.3.12, 1.2.7)
+  * $request - full original request line
+  * $status - response status (1.3.2, 1.2.2)
+  * $body\under{}bytes\under{}sent - number of bytes sent to a client, not counting the response header; this variable is compatible with the “%B”
+  * $http\under{}referer - http header "Referer"
+  * $http\under{}user\under{}agent - http header "User-Agent"
+
+* 权限访问记录
+ 待定
+ 
+* 数据可视化
+ 待定，可参照[[http://demo.nginx.com/status.html?_ga=1.63700711.959568803.1442589773][nginx plus - live load balancing status]]。吞出量，请求量，指定ip浏览统计。
+
+
+* 扩充
+** 可配置性
+ * 通过配置文件方式实现统计记录可配置化
