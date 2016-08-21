@@ -19,6 +19,16 @@
  3. CRUD概念: https://docs.mongodb.org/manual/core/crud/
  4. 传统关系型数据库跟mongodb的使用对比:https://docs.mongodb.org/manual/reference/sql-comparison/
  5. java版本操作库: https://docs.mongodb.org/getting-started/java/
+   
+*** 可视化
+ 仅仅供参考
+  ** d3.js
+   * [[http://d3js.org][官网]]
+   * [[https://github.com/mbostock/d3/wiki/Gallery][example]]
+
+  ** ECharts
+   * [[http://echarts.baidu.com/][官网]]
+   * [[http://echarts.baidu.com/doc/example.html][example]]
     
 
 * 访问日志
@@ -31,11 +41,12 @@
 ** 记录数据
  *** 数据范例(取于[[https://www.nginx.com/resources/admin-guide/logging-and-monitoring/][nginx 访问日志]])
   * 格式
-   '$remote\under{}addr - $remote\under{}user [$time\under{}local] "$request" $status $body\under{}bytes\under{}sent "$http\under{}referer" "$http\under{}user\under{}agent"  
+   '$app $remote\under{}addr - $remote\under{}user [$time\under{}local] "$request" $status $body\under{}bytes\under{}sent "$http\under{}referer" "$http\under{}user\under{}agent"  
   * 例子
    127.0.0.1 - - [05/Oct/2015:00:00:58 +0800] "GET /index.php HTTP/1.1" 200 91632 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10\under{}10\under{}2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36"
 
  说明:
+  * $app - legal eds apps
   * $remote\under{}addr - client address
   * $remote\under{}user - user name supplied with the Basic authentication
   * $time\under{}local - local time in the Common Log Format (1.3.12, 1.2.7)
@@ -49,6 +60,7 @@
  待定
  
 * 数据可视化
+** 
  待定，可参照[[http://demo.nginx.com/status.html?_ga=1.63700711.959568803.1442589773][nginx plus - live load balancing status]]。吞出量，请求量，指定ip浏览统计。
 
 
