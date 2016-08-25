@@ -15,6 +15,8 @@ categories:
   tar -zxvf httpd-2.2.29.tar.gz
 {% endcodeblock %}
 
+<!--more-->
+
 配置编译安装
 {% codeblock lang:shell %}
   cd httpd-2.2.29
