@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>安装httpd并整合tomcat | Wait&#39;s Blog</title>
+  <meta name="author" content="shifanhuang">
+  
+  <meta name="description" content="安装httpd下载httpd并解压12weget http://mirrors.hust.edu.cn/apache//httpd/httpd-2.2.29.tar.gztar -zxvf httpd-2.2.29.tar.gz">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="安装httpd并整合tomcat"/>
+  <meta property="og:site_name" content="Wait&#39;s Blog"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">Wait&#39;s Blog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 安装httpd并整合tomcat</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h1 id="安装httpd"><a href="#安装httpd" class="headerlink" title="安装httpd"></a>安装httpd</h1><p>下载<a href="http://httpd.apache.org/" target="_blank" rel="external">httpd</a>并解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">weget http://mirrors.hust.edu.cn/apache//httpd/httpd-2.2.29.tar.gz</div><div class="line">tar -zxvf httpd-2.2.29.tar.gz</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>配置编译安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cd httpd-2.2.29</div><div class="line">#prefix是指定了安装位置</div><div class="line">./configure --prefix=/usr/local/apache2 \      # 安装目录</div><div class="line">--enable-modules=most \                        # 大部分模块静态编译到httpd的二进制文件中</div><div class="line">--enable-mods-shared=all \                     # 表示动态加载所有模块,如果去掉shared的话,是静态加载所有模块</div><div class="line">--enable-so \</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
+<p>以上没有错误就启动httpd, 注意:因为还没加进服务，所以需要到httpd安装目录下用前端控制工具启动(不能用service httpd start)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/apache2/bin/apachectl start</div></pre></td></tr></table></figure><br>打开浏览器浏览<a href="http://localhost" target="_blank" rel="external">http://localhost</a>看见It’s ok就代表httpd安装并启动成功了</p>
+<p>加进服务和开机启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">cp /usr/local/apache2/bin/apachectl /init.d/httpd</div><div class="line">ln -s /etc/init.d/httpd /etc/rc.d/rc5.d/S85httpd</div><div class="line"># 运行chkconfig --list发现列表中并没有httpd,通过chkconfig --add httpd来添加,</div><div class="line"># 可能会提示httpd服务不支持chkconfig,需要编辑/etc/init.d/httpd,加入注析#chkconfig 345 85 15</div><div class="line"># 345代表哪些linux级别需要启动httpd,启动序号85 关闭序号15</div><div class="line">chkconfig --add httpd</div><div class="line"># 发现存在了</div><div class="line">chkconfig --list httpd</div><div class="line"># 接下来就可能用service http命令关闭和启动httpd了</div><div class="line"></div><div class="line"># 加进开机启动</div><div class="line">chkconfig httpd on</div></pre></td></tr></table></figure></p>
+<h1 id="整合tomcat"><a href="#整合tomcat" class="headerlink" title="整合tomcat"></a>整合tomcat</h1><p>在/usr/local/apache2/conf/httpd.conf最后加上Include conf/extra/tomcat-vhosts.conf,<br>编辑/usr/local/apache2/conf/extra/tomcat-vhosts.conf<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># enable name virtual</div><div class="line">NameVirtualHost *:80</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">VirtualHost</span> *<span class="attr">:80</span>&gt;</span></div><div class="line">  ServerName test.h4fan.com</div><div class="line">  DocumentRoot /path/to/project/root</div><div class="line">  ProxyPass / http://localhost:8080/</div><div class="line">  ProxyPassReverse / http://localhost:8080/</div><div class="line">  ErrorLog "logs/test-error.log"</div><div class="line"><span class="tag">&lt;/<span class="name">VirtualHost</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>重启httpd,发现出错了<br><em>Invalid command ‘ProxyPass’, perhaps misspelled or defined by a module not included in the server configuration</em><br>需要安装proxy等模块</p>
+<p>介绍下添加模块的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/apache2/bin/apxs -c -i -a mod_proxy.c proxy_util.c</div></pre></td></tr></table></figure><br>说明:<br>-c 执行编译操作<br>-i 安装操作,安装一个或多个动态共享对象到modules目录<br>-a 自动增加一个LoadModule到httpd.conf文件,以激活模块,若此存在则启动之<br>-A 与-a类似,但是它增加的LoadModule前面加有#<br>-e 需要执行编辑操作,可与-a和-A选项配合使用,与-i操作类似,修改httpd.conf文件,但并不安装此模块</p>
+<p>切换到源代码目录下的/modules/proxy,执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#/usr/local/apache2/bin/apxs -c -i -a mod_proxy.c proxy_util.c</div><div class="line">#/usr/local/apache2/bin/apxs -c -i -a mod_proxy_http.c</div><div class="line">#/usr/local/apache2/bin/apxs -c -i -a mod_proxy_ajp.c ajp*.c</div></pre></td></tr></table></figure></p>
+<p>现在再启动httpd就没出错了</p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+
+    
+    
+    <a href="/2016/11/23/react-native笔记-基础篇/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Anterior</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2014/10/22/判断指定区间-或操作符实现/" type="button" class="btn btn-default ">Próximo<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">Comentários</h2>
+
+    
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2015-05-02 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/服务器/">服务器<span>1</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/tomcat/">tomcat<span>1</span></a></li> <li><a href="/tags/apache-httpd/">apache httpd<span>1</span></a></li> <li><a href="/tags/linux/">linux<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2016 shifanhuang
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
