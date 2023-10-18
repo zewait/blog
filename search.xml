@@ -4,8 +4,42 @@
   
     
     <entry>
+      <title><![CDATA[音频反向问题]]></title>
+      <url>http://blog.00ps.win/2022/04/16/%25E9%259F%25B3%25E9%25A2%2591%25E5%258F%258D%25E5%2590%2591%25E9%2597%25AE%25E9%25A2%2598/</url>
+      <content type="html"><![CDATA[<h1 id="什么是音频反向？"><a href="#什么是音频反向？" class="headerlink" title="什么是音频反向？"></a>什么是音频反向？</h1><p>音频左右声道波形图相反。这会导致混音的时候声音互相抵消掉，变成静音。</p>
+<a id="more"></a>
+<p><img src="/resources/音频反向问题/audio_phase.png" alt="波形相反"></p>
+<h1 id="如何检查出音频是否反向"><a href="#如何检查出音频是否反向" class="headerlink" title="如何检查出音频是否反向"></a>如何检查出音频是否反向</h1><h2 id="1-制造反向音频数据"><a href="#1-制造反向音频数据" class="headerlink" title="1. 制造反向音频数据"></a>1. 制造反向音频数据</h2><p>音频文件下载: <a href="resources/音频反向问题/original.wav">original.wav</a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i origin.wav -af &quot;pan=stereo|c0=c1|c1=c1,aeval=val(0)|-val(1)&quot; invert_phase.wav</span><br><span class="line">命令说明：</span><br><span class="line">pan=stereo|c0=c1|c1=c1 - 将左声道替换为右声道，统一声道</span><br><span class="line">aeval=val(0)|-val(1) - 反向右声道</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-提取出pcm数据"><a href="#2-提取出pcm数据" class="headerlink" title="2. 提取出pcm数据"></a>2. 提取出pcm数据</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 提取出大端序（方便阅读）的pcm数据，每个样本占16位</span></span><br><span class="line">ffmpeg -i inver_phase.wav -ar 44100 -ac 2 -f s16be inver_phase_44100_2_s16be.pcm</span><br></pre></td></tr></table></figure>
+<h2 id="3-分析pcm数据，找出反向数据的特点"><a href="#3-分析pcm数据，找出反向数据的特点" class="headerlink" title="3. 分析pcm数据，找出反向数据的特点"></a>3. 分析pcm数据，找出反向数据的特点</h2><p>pcm数据结构如下<br><img src="/resources/音频反向问题/pcm_data_struct.png" alt="pcm数据结构"><br>如果音频反向了，左右声道在转成单声道的时候降为是静音；转换规则：左声道+右声道<br>下面使用imhex打开pcm文件分析。每2个字节为一个采样样本，基数个为左声道，偶数个为右边声道；<br>从数据上看两两左右声道相加得出为0（静音）<br><img src="/resources/音频反向问题/imhex_pcm.png" alt="imhex分析pcm"><br><strong>至此我们得出只要多声道数据相加为0就可能存在反向问题，注意这里是可能存在问题，还得结合多个样本分析</strong></p>
+<h1 id="如何修复"><a href="#如何修复" class="headerlink" title="如何修复"></a>如何修复</h1><ol>
+<li>将其中一个声道做下反向操作</li>
+<li>延迟声道（适用于音频录制造成的问题）。可以用ffmpeg的<a href="https://ffmpeg.org/ffmpeg-filters.html#adelay">adelay过滤器</a></li>
+</ol>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://www.cnblogs.com/codertian/p/6657844.html">多媒体基础知识之PCM数据</a></li>
+<li><a href="https://blog.landr.com/out-of-phase-audio/">What is Out of Phase Audio and How to Fix It</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 多媒体 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ffmpeg </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[webpack搭建react构建环境]]></title>
-      <url>http://blog.00ps.win/2016/12/16/webpack%E6%90%AD%E5%BB%BAreact%E6%9E%84%E5%BB%BA%E7%8E%AF%E5%A2%83/</url>
+      <url>http://blog.00ps.win/2016/12/16/webpack%25E6%2590%25AD%25E5%25BB%25BAreact%25E6%259E%2584%25E5%25BB%25BA%25E7%258E%25AF%25E5%25A2%2583/</url>
       <content type="html"><![CDATA[<h1 id="Babel和Webpack"><a href="#Babel和Webpack" class="headerlink" title="Babel和Webpack"></a>Babel和Webpack</h1><p>事实上react并不需要这些工具就能运行；但是为了充分使用 <a href="https://github.com/lukehoban/es6features" target="_blank" rel="external">ES6</a>、<a href="https://facebook.github.io/react/docs/jsx-in-depth.html" target="_blank" rel="external">JSX</a> 和bunding</p>
 <a id="more"></a>
 <h1 id="让我们重新配置"><a href="#让我们重新配置" class="headerlink" title="让我们重新配置"></a>让我们重新配置</h1><p>新建一个react-hello-world文件夹并用npm初始化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir react-hello-world</div><div class="line">cd react-hello-world</div><div class="line">npm init</div></pre></td></tr></table></figure></p>
@@ -34,11 +68,27 @@
 <p>启动服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">webpack-dev-server</div></pre></td></tr></table></figure></p>
 <p>我们就可以通过<a href="http://localhost:8080/webpack-dev-server/" target="_blank" rel="external">http://localhost:8080/webpack-dev-server/</a>来访问到index.html文件。现在试下做下修改看浏览器有什么变化？</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> web前端 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> react </tag>
+            
+            <tag> webpack </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[react-native笔记-基础篇]]></title>
-      <url>http://blog.00ps.win/2016/11/23/react-native%E7%AC%94%E8%AE%B0-%E5%9F%BA%E7%A1%80%E7%AF%87/</url>
+      <url>http://blog.00ps.win/2016/11/23/react-native%25E7%25AC%2594%25E8%25AE%25B0-%25E5%259F%25BA%25E7%25A1%2580%25E7%25AF%2587/</url>
       <content type="html"><![CDATA[<p>#Component</p>
 <ul>
 <li>定义组件首字必须大小，用于区分普通html元素</li>
@@ -64,29 +114,69 @@
 <li>用StyleSheet.create创建代替每次都创建新的对象</li>
 </ul>
 ]]></content>
+      
+        <categories>
+            
+            <category> react native </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> react react-native </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[安装httpd并整合tomcat]]></title>
-      <url>http://blog.00ps.win/2015/05/02/%E5%AE%89%E8%A3%85httpd%E5%B9%B6%E6%95%B4%E5%90%88tomcat/</url>
-      <content type="html"><![CDATA[<h1 id="安装httpd"><a href="#安装httpd" class="headerlink" title="安装httpd"></a>安装httpd</h1><p>下载<a href="http://httpd.apache.org/" target="_blank" rel="external">httpd</a>并解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">weget http://mirrors.hust.edu.cn/apache//httpd/httpd-2.2.29.tar.gz</div><div class="line">tar -zxvf httpd-2.2.29.tar.gz</div></pre></td></tr></table></figure></p>
+      <url>http://blog.00ps.win/2015/05/02/%25E5%25AE%2589%25E8%25A3%2585httpd%25E5%25B9%25B6%25E6%2595%25B4%25E5%2590%2588tomcat/</url>
+      <content type="html"><![CDATA[<h1 id="安装httpd"><a href="#安装httpd" class="headerlink" title="安装httpd"></a>安装httpd</h1><p>下载<a href="http://httpd.apache.org/">httpd</a>并解压<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">weget http://mirrors.hust.edu.cn/apache//httpd/httpd-2.2.29.tar.gz</span><br><span class="line">tar -zxvf httpd-2.2.29.tar.gz</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<p>配置编译安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cd httpd-2.2.29</div><div class="line">#prefix是指定了安装位置</div><div class="line">./configure --prefix=/usr/local/apache2 \      # 安装目录</div><div class="line">--enable-modules=most \                        # 大部分模块静态编译到httpd的二进制文件中</div><div class="line">--enable-mods-shared=all \                     # 表示动态加载所有模块,如果去掉shared的话,是静态加载所有模块</div><div class="line">--enable-so \</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
-<p>以上没有错误就启动httpd, 注意:因为还没加进服务，所以需要到httpd安装目录下用前端控制工具启动(不能用service httpd start)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/apache2/bin/apachectl start</div></pre></td></tr></table></figure><br>打开浏览器浏览<a href="http://localhost" target="_blank" rel="external">http://localhost</a>看见It’s ok就代表httpd安装并启动成功了</p>
-<p>加进服务和开机启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">cp /usr/local/apache2/bin/apachectl /init.d/httpd</div><div class="line">ln -s /etc/init.d/httpd /etc/rc.d/rc5.d/S85httpd</div><div class="line"># 运行chkconfig --list发现列表中并没有httpd,通过chkconfig --add httpd来添加,</div><div class="line"># 可能会提示httpd服务不支持chkconfig,需要编辑/etc/init.d/httpd,加入注析#chkconfig 345 85 15</div><div class="line"># 345代表哪些linux级别需要启动httpd,启动序号85 关闭序号15</div><div class="line">chkconfig --add httpd</div><div class="line"># 发现存在了</div><div class="line">chkconfig --list httpd</div><div class="line"># 接下来就可能用service http命令关闭和启动httpd了</div><div class="line"></div><div class="line"># 加进开机启动</div><div class="line">chkconfig httpd on</div></pre></td></tr></table></figure></p>
-<h1 id="整合tomcat"><a href="#整合tomcat" class="headerlink" title="整合tomcat"></a>整合tomcat</h1><p>在/usr/local/apache2/conf/httpd.conf最后加上Include conf/extra/tomcat-vhosts.conf,<br>编辑/usr/local/apache2/conf/extra/tomcat-vhosts.conf<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># enable name virtual</div><div class="line">NameVirtualHost *:80</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">VirtualHost</span> *<span class="attr">:80</span>&gt;</span></div><div class="line">  ServerName test.h4fan.com</div><div class="line">  DocumentRoot /path/to/project/root</div><div class="line">  ProxyPass / http://localhost:8080/</div><div class="line">  ProxyPassReverse / http://localhost:8080/</div><div class="line">  ErrorLog "logs/test-error.log"</div><div class="line"><span class="tag">&lt;/<span class="name">VirtualHost</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>配置编译安装<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd httpd-2.2.29</span><br><span class="line"><span class="meta">#</span><span class="bash">prefix是指定了安装位置</span></span><br><span class="line">./configure --prefix=/usr/local/apache2 \      # 安装目录</span><br><span class="line">--enable-modules=most \                        # 大部分模块静态编译到httpd的二进制文件中</span><br><span class="line">--enable-mods-shared=all \                     # 表示动态加载所有模块,如果去掉shared的话,是静态加载所有模块</span><br><span class="line">--enable-so \</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure></p>
+<p>以上没有错误就启动httpd, 注意:因为还没加进服务，所以需要到httpd安装目录下用前端控制工具启动(不能用service httpd start)<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/apache2/bin/apachectl start</span><br></pre></td></tr></table></figure><br>打开浏览器浏览<a href="http://localhost">http://localhost</a>看见It’s ok就代表httpd安装并启动成功了</p>
+<p>加进服务和开机启动<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/apache2/bin/apachectl /init.d/httpd</span><br><span class="line">ln -s /etc/init.d/httpd /etc/rc.d/rc5.d/S85httpd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行chkconfig --list发现列表中并没有httpd,通过chkconfig --add httpd来添加,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可能会提示httpd服务不支持chkconfig,需要编辑/etc/init.d/httpd,加入注析<span class="comment">#chkconfig 345 85 15</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 345代表哪些linux级别需要启动httpd,启动序号85 关闭序号15</span></span><br><span class="line">chkconfig --add httpd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 发现存在了</span></span><br><span class="line">chkconfig --list httpd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 接下来就可能用service http命令关闭和启动httpd了</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 加进开机启动</span></span><br><span class="line">chkconfig httpd on</span><br></pre></td></tr></table></figure></p>
+<h1 id="整合tomcat"><a href="#整合tomcat" class="headerlink" title="整合tomcat"></a>整合tomcat</h1><p>在/usr/local/apache2/conf/httpd.conf最后加上Include conf/extra/tomcat-vhosts.conf,<br>编辑/usr/local/apache2/conf/extra/tomcat-vhosts.conf<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># enable name virtual</span><br><span class="line">NameVirtualHost *:80</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">VirtualHost</span> *<span class="attr">:80</span>&gt;</span></span><br><span class="line">  ServerName test.h4fan.com</span><br><span class="line">  DocumentRoot /path/to/project/root</span><br><span class="line">  ProxyPass / http://localhost:8080/</span><br><span class="line">  ProxyPassReverse / http://localhost:8080/</span><br><span class="line">  ErrorLog &quot;logs/test-error.log&quot;</span><br><span class="line"><span class="tag">&lt;/<span class="name">VirtualHost</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>重启httpd,发现出错了<br><em>Invalid command ‘ProxyPass’, perhaps misspelled or defined by a module not included in the server configuration</em><br>需要安装proxy等模块</p>
-<p>介绍下添加模块的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/apache2/bin/apxs -c -i -a mod_proxy.c proxy_util.c</div></pre></td></tr></table></figure><br>说明:<br>-c 执行编译操作<br>-i 安装操作,安装一个或多个动态共享对象到modules目录<br>-a 自动增加一个LoadModule到httpd.conf文件,以激活模块,若此存在则启动之<br>-A 与-a类似,但是它增加的LoadModule前面加有#<br>-e 需要执行编辑操作,可与-a和-A选项配合使用,与-i操作类似,修改httpd.conf文件,但并不安装此模块</p>
-<p>切换到源代码目录下的/modules/proxy,执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#/usr/local/apache2/bin/apxs -c -i -a mod_proxy.c proxy_util.c</div><div class="line">#/usr/local/apache2/bin/apxs -c -i -a mod_proxy_http.c</div><div class="line">#/usr/local/apache2/bin/apxs -c -i -a mod_proxy_ajp.c ajp*.c</div></pre></td></tr></table></figure></p>
+<p>介绍下添加模块的命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/apache2/bin/apxs -c -i -a mod_proxy.c proxy_util.c</span><br></pre></td></tr></table></figure><br>说明:<br>-c 执行编译操作<br>-i 安装操作,安装一个或多个动态共享对象到modules目录<br>-a 自动增加一个LoadModule到httpd.conf文件,以激活模块,若此存在则启动之<br>-A 与-a类似,但是它增加的LoadModule前面加有#<br>-e 需要执行编辑操作,可与-a和-A选项配合使用,与-i操作类似,修改httpd.conf文件,但并不安装此模块</p>
+<p>切换到源代码目录下的/modules/proxy,执行<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">/usr/<span class="built_in">local</span>/apache2/bin/apxs -c -i -a mod_proxy.c proxy_util.c</span></span><br><span class="line"><span class="meta">#</span><span class="bash">/usr/<span class="built_in">local</span>/apache2/bin/apxs -c -i -a mod_proxy_http.c</span></span><br><span class="line"><span class="meta">#</span><span class="bash">/usr/<span class="built_in">local</span>/apache2/bin/apxs -c -i -a mod_proxy_ajp.c ajp*.c</span></span><br></pre></td></tr></table></figure></p>
 <p>现在再启动httpd就没出错了</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> 服务器 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tomcat </tag>
+            
+            <tag> apache httpd </tag>
+            
+            <tag> linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[判断指定区间(或操作符实现)]]></title>
-      <url>http://blog.00ps.win/2014/10/22/%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E5%8C%BA%E9%97%B4-%E6%88%96%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%AE%9E%E7%8E%B0/</url>
+      <url>http://blog.00ps.win/2014/10/22/%25E5%2588%25A4%25E6%2596%25AD%25E6%258C%2587%25E5%25AE%259A%25E5%258C%25BA%25E9%2597%25B4-%25E6%2588%2596%25E6%2593%258D%25E4%25BD%259C%25E7%25AC%25A6%25E5%25AE%259E%25E7%258E%25B0/</url>
       <content type="html"><![CDATA[<p>一般求一个值是否在指定区间为i&gt;=min&amp;&amp;i&lt;=max，但今天从网上看到这么一种写法((i-min)|(max-i))&gt;=0，原理很简单，只要i-min或者max-i其中为负数的时候，说明已经超出了区间，或操作得出的数字必定为负数</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> 算法 </category>
+            
+        </categories>
+        
+        
     </entry>
     
   
